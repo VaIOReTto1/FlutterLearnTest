@@ -5,9 +5,11 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       title: 'Flutter Dynamic Form Validation',
       home: DynamicFormValidation(),
     );
@@ -15,6 +17,8 @@ class MyApp extends StatelessWidget {
 }
 
 class DynamicFormValidation extends StatefulWidget {
+  const DynamicFormValidation({super.key});
+
   @override
   _DynamicFormValidationState createState() => _DynamicFormValidationState();
 }
@@ -42,7 +46,7 @@ class _DynamicFormValidationState extends State<DynamicFormValidation> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Dynamic Form Validation'),
+        title: const Text('任务清单'),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -51,16 +55,18 @@ class _DynamicFormValidationState extends State<DynamicFormValidation> {
             padding: const EdgeInsets.all(8.0),
             child: TextField(
               controller: textController,
-              decoration: InputDecoration(
-                labelText: 'Enter some text',
+              decoration: const InputDecoration(
+                labelText: '输入文本',
               ),
             ),
           ),
           ElevatedButton(
-            onPressed: isButtonEnabled ? () {
-              // TODO: 有文本时，提交表单
-            } : null,
-            child: Text('Submit'),
+            onPressed: isButtonEnabled
+                ? () {
+                    // TODO: 有文本时，提交表单
+                  }
+                : null,
+            child: const Text('Submit'),
           ),
         ],
       ),
