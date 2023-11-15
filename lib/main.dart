@@ -11,9 +11,11 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       title: 'Todo App',
       home: TodoListScreen(),
     );
@@ -21,10 +23,12 @@ class MyApp extends StatelessWidget {
 }
 
 class TodoListScreen extends StatelessWidget {
+  const TodoListScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Todo List')),
+      appBar: AppBar(title: const Text('任务清单')),
       body: Column(
         children: [
           Expanded(
@@ -48,13 +52,13 @@ class TodoListScreen extends StatelessWidget {
               },
             ),
           ),
-          FloatingActionButton(
-            child: Icon(Icons.add),
-            onPressed: () {
-              // TODO: 实现添加 Todo 的回调函数
-            },
-          ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: const Icon(Icons.add),
+        onPressed: () {
+          // TODO: 实现添加 Todo 的回调函数
+        },
       ),
     );
   }
