@@ -10,7 +10,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      title: 'Flutter Dynamic Form Validation',
+      debugShowCheckedModeBanner: false,
       home: DynamicFormValidation(),
     );
   }
@@ -46,7 +46,7 @@ class _DynamicFormValidationState extends State<DynamicFormValidation> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('任务清单'),
+        title: const Text('输入框监听'),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -66,7 +66,7 @@ class _DynamicFormValidationState extends State<DynamicFormValidation> {
                     // TODO: 有文本时，提交表单
                   }
                 : null,
-            child: const Text('Submit'),
+            child: const Text('提交'),
           ),
         ],
       ),
