@@ -24,12 +24,36 @@ class TodoListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Todo List')),
+      appBar: AppBar(title: const Text('Todo List')),
       body: Column(
         children: [
-          // TODO: 实现显示 Todo 列表的 Widget
-
-          // TODO: 实现添加新 Todo 的 Widget
+          Expanded(
+            // Todo 列表的构建函数
+            child: Consumer<TodosProvider>(
+              builder: (context, todosProvider, child) {
+                return ListView.builder(
+                  itemCount: todosProvider.todos.length,
+                  itemBuilder: (context, index) {
+                    var todo = todosProvider.todos[index];
+                    return ListTile(
+                      title: Text(todo.title),
+                      trailing: Checkbox(
+                        value: todo.isDone,
+                        // TODO: 实现切换 Todo 完成状态的回调函数
+                        onChanged: null,
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
+          ),
+          FloatingActionButton(
+            child: Icon(Icons.add),
+            onPressed: () {
+              // TODO: 实现添加 Todo 的回调函数
+            },
+          ),
         ],
       ),
     );
@@ -37,17 +61,16 @@ class TodoListScreen extends StatelessWidget {
 }
 
 class TodoModel {
-  String title;
-  bool isDone;
+  String title; // 任务标题
+  bool isDone; // 是否完成
 
   TodoModel({required this.title, this.isDone = false});
 
 // TODO: 添加方法来切换任务的完成状态
-
 }
 
 class TodosProvider extends ChangeNotifier {
-  List<TodoModel> _todos = [];
+  List<TodoModel> _todos = []; // 任务列表
 
   List<TodoModel> get todos => _todos;
 
