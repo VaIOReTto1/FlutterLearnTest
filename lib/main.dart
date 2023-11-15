@@ -10,7 +10,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      title: '计数器应用',
+      debugShowCheckedModeBanner: false,
       home: CounterPage(),
     );
   }
