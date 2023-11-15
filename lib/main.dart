@@ -9,9 +9,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: HomePage(),
-    )
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+        home: Scaffold(
+          appBar: AppBar(
+            title: const Text('Flutter Demo'),
+          ),
+          body: const HomePage(),
+        ));
   }
 }
 
@@ -20,6 +25,6 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Container();
   }
 }
