@@ -8,6 +8,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       home: MyHomePage(),
     );
@@ -32,7 +33,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('State Management Demo'),
+        title: const Text('有状态组件练习'),
       ),
       body: Center(
         // TODO: 根据状态变量显示相应的文本
@@ -40,8 +41,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _toggleButton,
-        tooltip: 'Toggle',
-        child: Icon(Icons.touch_app),
+        child: const Icon(Icons.touch_app),
       ),
     );
   }
