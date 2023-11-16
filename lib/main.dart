@@ -1,66 +1,100 @@
 import 'package:flutter/material.dart';
 
-void main() {
+main() {
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: CounterPage(),
+      home: HomePage(),
     );
   }
 }
 
-class CounterPage extends StatefulWidget {
-  const CounterPage({super.key});
-
-  @override
-  _CounterPageState createState() => _CounterPageState();
-}
-
-class _CounterPageState extends State<CounterPage> {
-  int _counter = 0; // 这是计数器的初始值
-
-  void _incrementCounter() {
-    // TODO: 在这里编写逻辑来增加计数器的值
-  }
+class HomePage extends StatelessWidget {
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('计数器应用'),
-      ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text(
-              '你已经按下按钮这么多次了:',
-            ),
-            const SizedBox(
-              height: 5,
-            ),
-            Text(
-              '$_counter', // 这里将显示计数器的值
-              style: const TextStyle(fontSize: 24),
-            ),
-            const SizedBox(
-              height: 5,
-            ),
-            FloatingActionButton(
-              onPressed: _incrementCounter, // 当按钮被按下时，_incrementCounter 方法将被调用
-              tooltip: '增加',
-              child: const Icon(Icons.add),
-            ),
-          ],
+        child: IconButton(
+          icon: Icon(Icons.chevron_right),
+          onPressed: (){
+            Navigator.of(context).push(MaterialPageRoute(builder: (context)=>MyStatePage()));
+          },
         ),
       ),
     );
+  }
+}
+
+
+class MyStatePage extends StatefulWidget {
+  const MyStatePage({Key? key}) : super(key: key);
+
+  @override
+  State<MyStatePage> createState() => _MyStatePageState();
+}
+
+class _MyStatePageState extends State<MyStatePage> {
+
+
+  @override
+  void initState() {
+    super.initState();
+    print("初始化：initState");
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    print("依赖变化：didChangeDependencies");
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    print("构建页面：build");
+    return Scaffold(
+      appBar: AppBar(),
+      body: Center(
+        child: IconButton(
+          onPressed: () {
+            print("调用setState重新build");
+            setState(() {});
+          },
+          icon: Icon(Icons.ac_unit,),
+        ),
+      ),
+    );
+  }
+
+  @override
+  void reassemble() {
+    super.reassemble();
+    print("热重载被调用，用于调试：reassemble");
+  }
+
+  @override
+  void didUpdateWidget(MyStatePage oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    print("组件被重新构建：didUpdateWidget");
+  }
+
+  @override
+  void deactivate() {
+    super.deactivate();
+    print("组件被移除节点：deactivate");
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    print("永久移除组件：dispose");
   }
 }
