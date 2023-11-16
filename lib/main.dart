@@ -1,63 +1,80 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-void main() => runApp(MyApp());
+main() {
+  // 在应用程序的顶层创建一个Provider对象，并将其提供给整个应用程序
+  runApp(ChangeNotifierProvider(
+    create: (_) => Counter(),
+    child: MaterialApp(
+      home: MyApp(),
+    ),
+  ));
+}
+
+class Counter with ChangeNotifier {
+  int _count = 0;
+
+  int get count => _count;
+
+  void increment() {
+    _count++;
+    notifyListeners();
+  }
+}
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      title: 'Scroll Listener Example',
-      home: ScrollListenerExample(),
+    return ChangeNotifierProvider(
+      create: (_) => Counter(),
+      child: MaterialApp(
+        home: MyHomePage(),
+      ),
     );
   }
 }
 
-class ScrollListenerExample extends StatefulWidget {
-  const ScrollListenerExample({super.key});
-
-  @override
-  _ScrollListenerExampleState createState() => _ScrollListenerExampleState();
-}
-
-class _ScrollListenerExampleState extends State<ScrollListenerExample> {
-  final ScrollController _scrollController = ScrollController();
-  double _offset = 0.0;
-
-  @override
-  void initState() {
-    super.initState();
-    _scrollController.addListener(_scrollListener);
-  }
-
-  void _scrollListener() {
-    setState(() {
-      _offset = _scrollController.offset;
-    });
-  }
-
-  @override
-  void dispose() {
-    _scrollController.removeListener(_scrollListener);
-    _scrollController.dispose();
-    super.dispose();
-  }
-
+class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    print('MyHomePage build');
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Scroll Listener Example'),
+        title: Text('Provider Test'),
       ),
-      body: ListView.builder(
-        controller: _scrollController,
-        itemCount: 50,
-        itemBuilder: (context, index) {
-          return ListTile(title: Text('Item$index'));
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+
+            // 1
+            Text('Using Provider.of'),
+            Text(
+              '${Provider.of<Counter>(context).count}',
+              style: Theme.of(context).textTheme.headline4,
+            ),
+
+            // 2
+            Text('Using Consumer'),
+            Consumer<Counter>(
+              builder: (context, counter, child) {
+                return Text(
+                  '${counter.count}',
+                  style: Theme.of(context).textTheme.headline4,
+                );
+              },
+            ),
+
+
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Provider.of<Counter>(context, listen: false).increment();
         },
+        child: Icon(Icons.add),
       ),
-      bottomNavigationBar: Text('Scroll Offset: $_offset'),
     );
   }
 }
