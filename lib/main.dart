@@ -11,51 +11,100 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: HomePage(),
+      home: OneAdd(),
     );
   }
 }
 
-class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
+class OneAdd extends StatefulWidget {
+  const OneAdd({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("状态管理"),
-      ),
-      body: const Center(
-        child: LikeIcon(),
-      ),
-    );
-  }
+  State<OneAdd> createState() => _OneAddState();
 }
 
-class LikeIcon extends StatefulWidget {
-  const LikeIcon({Key? key}) : super(key: key);
+class _OneAddState extends State<OneAdd> {
+  int counter = 0;
 
-  @override
-  State<LikeIcon> createState() => _LikeIconState();
-}
-
-class _LikeIconState extends State<LikeIcon> {
-  bool ok = false; // true代表点赞，false代表没点赞
-
-  clickFunc() {
-    // 使用State类提供的setState函数来刷新Widget状态
+  void increment() {
     setState(() {
-      ok = !ok;
+      counter++;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-        onTap: () => clickFunc(),
-        child: Icon(
-          Icons.thumb_up,
-          color: ok ? Colors.blue : Colors.grey,
-        ));
+    return Scaffold(
+      appBar: AppBar(),
+      body: Center(
+        child: Column(
+          children: [
+            const Text(
+              '你的变量已经赋值了',
+              style: TextStyle(
+                fontSize: 30,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            Text(
+              '$counter',
+              style: const TextStyle(
+                fontSize: 30,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            TwoAdd(
+              counter: counter,
+              twoIncrement: (){
+                setState(() {
+                  counter+=2;
+                });
+              },
+            ),
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: increment,
+        child: const Icon(Icons.add),
+      ),
+    );
+  }
+}
+
+class TwoAdd extends StatelessWidget {
+  final int counter;
+  final VoidCallback twoIncrement;
+  const TwoAdd({super.key, required this.counter, required this.twoIncrement});
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: Column(
+        children: [
+          Text(
+            '点击下方按钮为变量赋值加二',
+            style: const TextStyle(
+              fontSize: 30,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          Text(
+            '$counter',
+            style: const TextStyle(
+              fontSize: 30,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          ElevatedButton(
+            onPressed: twoIncrement,
+            child: const Text('点击'),
+          ),
+        ],
+      ),
+    );
   }
 }
