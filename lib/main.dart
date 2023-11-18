@@ -45,7 +45,7 @@ class TodoListScreen extends StatelessWidget {
                       trailing: Checkbox(
                         value: todo.isDone,
                         // TODO: 实现切换 Todo 完成状态的回调函数
-                        onChanged: null,
+                        onChanged: (_)=>null,
                       ),
                     );
                   },
