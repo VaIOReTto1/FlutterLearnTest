@@ -1,109 +1,84 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-main() {
-  runApp(const MyApp());
+void main() {
+  // 在应用程序顶层封装ChangeNotifierProvider
+  runApp(
+    ChangeNotifierProvider(
+      // 创建一个ThemeNotifier实例
+      create: (_) => ThemeNotifier(lightTheme),
+      child: MyApp(),
+    ),
+  );
+}
+
+// 定义两种不同的主题数据
+final ThemeData lightTheme = ThemeData(
+  primarySwatch: Colors.blue,
+  brightness: Brightness.light,
+);
+
+final ThemeData darkTheme = ThemeData(
+  primarySwatch: Colors.blue,
+  brightness: Brightness.dark,
+);
+
+// ThemeNotifier类用于管理应用主题的状态
+class ThemeNotifier with ChangeNotifier {
+  ThemeData _themeData;
+
+  // 构造函数初始化当前主题为传入的主题
+  ThemeNotifier(this._themeData);
+
+  // 获取当前的主题
+  ThemeData get themeData => _themeData;
+
+  // 设置新的主题并通知听众
+  set themeData(ThemeData themeData) {
+    _themeData = themeData;
+    notifyListeners();
+  }
+
+  // 方法用于在两种主题间切换
+  void toggleTheme() {
+    if (_themeData.brightness == Brightness.light) {
+      themeData = darkTheme;
+    } else {
+      themeData = lightTheme;
+    }
+  }
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: OneAdd(),
+    // 使用Consumer来监听ThemeNotifier变化
+    return Consumer<ThemeNotifier>(
+      builder: (context, theme, _) => MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: theme.themeData, // 应用当前主题
+        home: ThemeSwitcherPage(), // 主屏幕为ThemeSwitcherPage
+      ),
     );
   }
 }
 
-class OneAdd extends StatefulWidget {
-  const OneAdd({super.key});
-
-  @override
-  State<OneAdd> createState() => _OneAddState();
-}
-
-class _OneAddState extends State<OneAdd> {
-  int counter = 0;
-
-  void increment() {
-    setState(() {
-      counter++;
-    });
-  }
-
+// 主屏幕类
+class ThemeSwitcherPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text('Theme Switcher'), // 应用栏标题
+      ),
       body: Center(
-        child: Column(
-          children: [
-            const Text(
-              '你的变量已经赋值了',
-              style: TextStyle(
-                fontSize: 30,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            Text(
-              '$counter',
-              style: const TextStyle(
-                fontSize: 30,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            TwoAdd(
-              counter: counter,
-              twoIncrement: (){
-                setState(() {
-                  counter+=2;
-                });
-              },
-            ),
-          ],
+        // 居中的按钮用于切换主题
+        child: ElevatedButton(
+          onPressed: () =>
+          // 不监听变化，只调用方法
+          Provider.of<ThemeNotifier>(context, listen: false).toggleTheme(),
+          child: Text('Toggle Theme'), // 按钮文本
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: increment,
-        child: const Icon(Icons.add),
-      ),
-    );
-  }
-}
-
-class TwoAdd extends StatelessWidget {
-  final int counter;
-  final VoidCallback twoIncrement;
-  const TwoAdd({super.key, required this.counter, required this.twoIncrement});
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      child: Column(
-        children: [
-          Text(
-            '点击下方按钮为变量赋值加二',
-            style: const TextStyle(
-              fontSize: 30,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          Text(
-            '$counter',
-            style: const TextStyle(
-              fontSize: 30,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          ElevatedButton(
-            onPressed: twoIncrement,
-            child: const Text('点击'),
-          ),
-        ],
       ),
     );
   }
